@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
-import { Open_Sans } from 'next/font/google';
+import { Open_Sans, Courier_Prime } from 'next/font/google';
 import './globals.css';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 const sans = Open_Sans({ subsets: ['latin'] });
+const courier = Courier_Prime({ weight: ['400'], subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -15,8 +18,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang='en' className={sans.className}>
-      <body>{children}</body>
+    <html lang='en' className={courier.className}>
+      <body className='flex flex-col w-full h-[100vh] max-w-[1920px] mx-auto'>
+        <Header />
+        <main className='grow'>{children}</main>
+        <Footer />
+      </body>
     </html>
   );
 }
