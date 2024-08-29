@@ -19,9 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en' className={courier.className}>
-      <body className='relative flex flex-col w-full h-[100vh] max-w-[1920px] mx-auto'>
+      <body className='relative flex flex-col items-center w-full h-[100vh]'>
         <Header />
-        <main className='relative grow px-[20px] bg-white'>{children}</main>
+        <main className='px-[20px] bg-white'>{children}</main>
         <Footer />
       </body>
     </html>
