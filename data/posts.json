@@ -1,0 +1,29 @@
+[
+  {
+    "title": "HTML의 <span> 태그 내 정렬",
+    "description": "HTML <span> Tag Align",
+    "date": "2022-03-04",
+    "category": "html/css",
+    "path": "html-span-tag-align",
+    "featured": true,
+    "image": "html-span-tag-align.jpg"
+  },
+  {
+    "title": "변수란?",
+    "description": "JavaScript 변수란?",
+    "date": "2022-05-08",
+    "category": "javascript",
+    "path": "javascript-var",
+    "featured": true,
+    "image": "javascript-basic.png"
+  },
+  {
+    "title": "var & let & const 비교",
+    "description": "var & let & const 비교",
+    "date": "2023-04-15",
+    "category": "javascript",
+    "path": "var-let-const",
+    "featured": true,
+    "image": "best-react-practices.png"
+  }
+]
