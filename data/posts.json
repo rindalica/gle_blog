@@ -25,5 +25,50 @@
     "path": "var-let-const",
     "featured": true,
     "image": "best-react-practices.png"
+  },
+  {
+    "title": "HTML이란?",
+    "description": "HTML이란?",
+    "date": "2022-04-29",
+    "category": "html/css",
+    "path": "html",
+    "featured": true,
+    "image": "best-react-practices.png"
+  },
+  {
+    "title": "px, em, rem 단위에 대해",
+    "description": "px, em, rem 단위에 대해",
+    "date": "2022-04-28",
+    "category": "html/css",
+    "path": "px-em-rem",
+    "featured": true,
+    "image": "best-react-practices.png"
+  },
+  {
+    "title": "Sementic tag 란",
+    "description": "Sementic tag 란",
+    "date": "2022-04-28",
+    "category": "html/css",
+    "path": "sementic-tag",
+    "featured": true,
+    "image": "best-react-practices.png"
+  },
+  {
+    "title": "DOCTYPE 이란?",
+    "description": "DOCTYPE 이란?",
+    "date": "2022-04-26",
+    "category": "html/css",
+    "path": "doctype",
+    "featured": true,
+    "image": "best-react-practices.png"
+  },
+  {
+    "title": "text-indent & text-decoration",
+    "description": "text-indent & text-decoration",
+    "date": "2023-03-29",
+    "category": "html/css",
+    "path": "text-indent-text-decoration",
+    "featured": true,
+    "image": "best-react-practices.png"
   }
 ]
