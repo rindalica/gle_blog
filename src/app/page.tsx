@@ -5,7 +5,7 @@ import CarouselPosts from '@/components/CarouselPosts';
 
 export default function HomePage() {
   return (
-    <div className='flex flex-col items-center gap-[20px]'>
+    <div className='flex flex-col items-center h-full'>
       <Hero />
       {/* <FeaturedPosts />
       <CarouselPosts /> */}

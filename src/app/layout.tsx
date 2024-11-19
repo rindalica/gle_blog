@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang='en' className={courier.className}>
       <body className='relative flex flex-col items-center w-full h-[100vh]'>
         <Header />
-        <main className='px-[20px] bg-white'>{children}</main>
+        <main className='w-full h-full px-[20px] bg-white'>{children}</main>
         <Footer />
       </body>
     </html>
