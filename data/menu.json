@@ -1,0 +1,42 @@
+[
+  {
+    "menu": "포케",
+    "storeNm": "슬로우캘리",
+    "isMeal": "식사"
+  },
+  {
+    "menu": "에그타르트",
+    "storeNm": "베이크더샵",
+    "isMeal": "디저트"
+  },
+  {
+    "menu": "초밥",
+    "storeNm": "은행골",
+    "isMeal": "식사"
+  },
+  {
+    "menu": "떡볶이",
+    "storeNm": "달떡볶이",
+    "isMeal": "식사"
+  },
+  {
+    "menu": "쌀국수",
+    "storeNm": "에머이",
+    "isMeal": "식사"
+  },
+  {
+    "menu": "치킨",
+    "storeNm": "교촌",
+    "isMeal": "식사"
+  },
+  {
+    "menu": "훠궈",
+    "storeNm": "훠궈야",
+    "isMeal": "식사"
+  },
+  {
+    "menu": "김밥",
+    "storeNm": "식물원김밥",
+    "isMeal": "식사"
+  }
+]
