@@ -1,0 +1,30 @@
+.btn {
+  padding: 10px;
+  background-color: #f5c703;
+  border: 3px solid black;
+  border-radius: 10px;
+}
+
+.result_modal {
+  position: absolute;
+  padding: 50px;
+  border: 5px solid black;
+  border-radius: 10px;
+  background-color: pink;
+  font-family: "Nanum Gothic", sans-serif;
+  font-weight: 800;
+  font-style: normal;
+  font-size: 24px;
+
+  .close_btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .close_btn:hover {
+    cursor: pointer;
+  }
+}
