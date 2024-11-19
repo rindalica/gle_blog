@@ -13,18 +13,10 @@ export default function PostCard({
     <Link href={`/posts/${path}`}>
       <article className='w-full h-[300px] rounded-lg overflow-hidden shadow-lg'>
         <div
-          className={`flex items-center justify-center h-[200px] ${bgColor(
-            category
-          )}`}
+          className='flex items-center justify-center h-[200px]'
+          style={{ background: bgColor(category) }}
         >
           <div>{category}</div>
-          {/* <Image
-            className='w-full'
-            src={`/images/posts/${image}`}
-            alt={title}
-            width={300}
-            height={200}
-          /> */}
         </div>
 
         <div className='flex flex-col items-center p-4'>
@@ -33,7 +25,10 @@ export default function PostCard({
             {title}
           </h3>
           <p className='w-full truncate text-center'>{description}</p>
-          <span className='text-sm rounded-lg bg-green-100 px-2 my-2'>
+          <span
+            className='text-sm rounded-lg  px-2 my-2'
+            style={{ background: bgColor(category) }}
+          >
             {category}
           </span>
         </div>

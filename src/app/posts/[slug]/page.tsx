@@ -23,11 +23,10 @@ export default async function PostPage({ params: { slug } }: Props) {
         height={420}
       /> */}
       <div
-        className={`flex items-center justify-center h-[420px] ${bgColor(
-          postData.category
-        )}`}
+        className='flex items-center justify-center h-[420px]'
+        style={{ background: bgColor(postData.category) }}
       >
-        <div>{postData.category}</div>
+        <div className='text-2xl'>{postData.category}</div>
       </div>
       <PostContent postData={postData} />
     </article>
