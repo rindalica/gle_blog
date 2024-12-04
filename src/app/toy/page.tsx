@@ -10,7 +10,7 @@ export default function ToyPage() {
           메뉴 추천
         </Link>
         <Link className={styles.link_todo} href='/toy/todo'>
-          To DO
+          TO DO
         </Link>
       </div>
     </div>

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import styles from './pga.module.css';
+import styles from './page.module.css';
 import Link from 'next/link';
 import { client } from '@/service/sanity';
 
@@ -15,6 +15,8 @@ export default function ToyPage() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [deletedTodo, setDeletedTodo] = useState('');
 
   // 데이터를 서버에서 초기화
   const fetchTodos = async () => {
@@ -101,13 +103,41 @@ export default function ToyPage() {
               <span onClick={() => toggleTodo(todo?._id || '')}>
                 - {todo.contents}
               </span>
-              <button onClick={() => handleDeleteTodo(todo._id || '')}>
+              <button
+                onClick={() => {
+                  // handleDeleteTodo(todo._id || '');
+                  setModalOpen(true);
+                  setDeletedTodo(todo._id || '');
+                }}
+              >
                 🗑️
               </button>
             </li>
           ))}
         </ul>
       </div>
+      {isModalOpen && (
+        <div className={styles.modal}>
+          <span>삭제하시겠습니까?</span>
+          <div className={styles.btn_box}>
+            <button
+              onClick={() => {
+                handleDeleteTodo(deletedTodo);
+                setModalOpen(false);
+              }}
+            >
+              삭제
+            </button>
+            <button
+              onClick={() => {
+                setModalOpen(false);
+              }}
+            >
+              취소
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
