@@ -3,65 +3,73 @@
 import React, { useState, useEffect } from 'react';
 import styles from './pga.module.css';
 import Link from 'next/link';
-import {
-  loadFromLocalStorage,
-  saveToLocalStorage,
-} from '@/service/localStorageUtils';
+import { client } from '@/service/sanity';
 
 type Todo = {
-  id: number;
-  text: string;
+  _id?: string;
+  contents: string;
   completed: boolean;
 };
 
-// 키 이름 설정
-const STORAGE_KEY = process.env.NEXT_PUBLIC_TODO_STORAGE_KEY as string;
-
 export default function ToyPage() {
-  const [todos, setTodos] = useState<Todo[]>(() => {
-    const storedTodos = localStorage.getItem(STORAGE_KEY);
-    return storedTodos ? JSON.parse(storedTodos) : [];
-  });
+  const [todos, setTodos] = useState<Todo[]>([]);
   const [inputValue, setInputValue] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  // 로컬 스토리지에서 데이터 불러오기
+  // 데이터를 서버에서 초기화
+  const fetchTodos = async () => {
+    const query = `*[_type == "todo"]`;
+    const data = await client.fetch(query);
+    setTodos(data);
+  };
+
   useEffect(() => {
-    const storedData = loadFromLocalStorage(STORAGE_KEY);
-    setTodos(storedData);
+    fetchTodos();
   }, []);
-
-  // 데이터가 변경될 때 로컬 스토리지에 저장
-  useEffect(() => {
-    saveToLocalStorage(STORAGE_KEY, todos);
-  }, [todos]);
 
   const enterkey = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      addTodo();
+      handleAddTodo();
     }
   };
 
-  const addTodo = () => {
+  const handleAddTodo = async () => {
     if (!inputValue.trim()) return;
-    const newData = [
-      ...todos,
-      { id: Date.now(), text: inputValue, completed: false },
-    ];
-    setTodos(newData);
-    saveToLocalStorage(STORAGE_KEY, newData);
-    setInputValue('');
+    setLoading(true);
+
+    try {
+      await client.create({
+        _type: 'todo',
+        contents: inputValue,
+        completed: false,
+      });
+      await fetchTodos(); // 서버에서 데이터를 다시 가져옵니다.
+    } catch (error) {
+      console.error('Failed to add todo:', error);
+    } finally {
+      setInputValue('');
+      setLoading(false);
+    }
   };
 
-  const toggleTodo = (id: number) => {
+  const toggleTodo = (id: string) => {
     setTodos(
       todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+        todo._id === id ? { ...todo, completed: !todo.completed } : todo
       )
     );
   };
 
-  const deleteTodo = (id: number) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+  const handleDeleteTodo = async (id: string) => {
+    setLoading(true);
+    try {
+      await client.delete(id); // 문서가 존재하면 삭제
+      await fetchTodos(); // 서버에서 데이터를 다시 가져옵니다.
+    } catch (error) {
+      console.error('Failed to delete todo:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -79,19 +87,23 @@ export default function ToyPage() {
             onKeyDown={enterkey}
             placeholder='Add a new task...'
           />
-          <button onClick={addTodo}>+</button>
+          <button onClick={handleAddTodo}>+</button>
         </div>
         <ul className={styles.list}>
           {todos.map((todo) => (
             <li
-              key={todo.id}
+              key={todo._id}
               style={{
                 textDecoration: todo.completed ? 'line-through' : 'none',
                 cursor: 'pointer',
               }}
             >
-              <span onClick={() => toggleTodo(todo.id)}>- {todo.text}</span>
-              <button onClick={() => deleteTodo(todo.id)}>🗑️</button>
+              <span onClick={() => toggleTodo(todo?._id || '')}>
+                - {todo.contents}
+              </span>
+              <button onClick={() => handleDeleteTodo(todo._id || '')}>
+                🗑️
+              </button>
             </li>
           ))}
         </ul>
