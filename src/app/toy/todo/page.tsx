@@ -1,9 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import styles from './page.module.css';
 import Link from 'next/link';
 import { client } from '@/service/sanity';
+import Loading from '@/app/loading';
+import { log } from 'console';
 
 type Todo = {
   _id?: string;
@@ -20,8 +22,9 @@ export default function ToyPage() {
 
   // 데이터를 서버에서 초기화
   const fetchTodos = async () => {
-    const query = `*[_type == "todo"]`;
+    const query = `*[_type == "todo"] | order(_createdAt desc)`; //업데이트 순으로 정렬 (최신이 먼저오도록))
     const data = await client.fetch(query);
+
     setTodos(data);
   };
 
@@ -37,6 +40,7 @@ export default function ToyPage() {
 
   const handleAddTodo = async () => {
     if (!inputValue.trim()) return;
+    setInputValue('');
     setLoading(true);
 
     try {
@@ -45,28 +49,28 @@ export default function ToyPage() {
         contents: inputValue,
         completed: false,
       });
-      await fetchTodos(); // 서버에서 데이터를 다시 가져옵니다.
+      await fetchTodos(); // 서버에서 데이터를 다시 가져옴
     } catch (error) {
       console.error('Failed to add todo:', error);
     } finally {
-      setInputValue('');
       setLoading(false);
     }
   };
 
-  const toggleTodo = (id: string) => {
-    setTodos(
-      todos.map((todo) =>
-        todo._id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
+  const toggleTodo = async (id: string, completed: boolean) => {
+    await client
+      .patch(id)
+      .set({ completed: !completed }) //필드 값 수정
+      .commit(); // 서버에 변경 사항 적용
+
+    await fetchTodos(); // 서버에서 데이터를 다시 가져옴
   };
 
   const handleDeleteTodo = async (id: string) => {
     setLoading(true);
     try {
       await client.delete(id); // 문서가 존재하면 삭제
-      await fetchTodos(); // 서버에서 데이터를 다시 가져옵니다.
+      await fetchTodos(); // 서버에서 데이터를 다시 가져옴.
     } catch (error) {
       console.error('Failed to delete todo:', error);
     } finally {
@@ -91,30 +95,37 @@ export default function ToyPage() {
           />
           <button onClick={handleAddTodo}>+</button>
         </div>
-        <ul className={styles.list}>
-          {todos.map((todo) => (
-            <li
-              key={todo._id}
-              style={{
-                textDecoration: todo.completed ? 'line-through' : 'none',
-                cursor: 'pointer',
-              }}
-            >
-              <span onClick={() => toggleTodo(todo?._id || '')}>
-                - {todo.contents}
-              </span>
-              <button
-                onClick={() => {
-                  // handleDeleteTodo(todo._id || '');
-                  setModalOpen(true);
-                  setDeletedTodo(todo._id || '');
+        {loading ? (
+          <Loading />
+        ) : (
+          <ul className={styles.list}>
+            {todos.map((todo) => (
+              <li
+                key={todo._id}
+                style={{
+                  textDecoration: todo.completed ? 'line-through' : 'none',
+                  color: todo.completed ? '#888' : 'initial',
+                  cursor: 'pointer',
                 }}
               >
-                🗑️
-              </button>
-            </li>
-          ))}
-        </ul>
+                <span
+                  onClick={() => toggleTodo(todo?._id || '', todo.completed)}
+                >
+                  - {todo.contents}
+                </span>
+                <button
+                  onClick={() => {
+                    // handleDeleteTodo(todo._id || '');
+                    setModalOpen(true);
+                    setDeletedTodo(todo._id || '');
+                  }}
+                >
+                  🗑️
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
       {isModalOpen && (
         <div className={styles.modal}>
