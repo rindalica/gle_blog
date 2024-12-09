@@ -1,6 +1,5 @@
 import React from 'react';
 import styles from '././page.module.css';
-import ResultMenu from './components/ResultMenu';
 import Link from 'next/link';
 import MenuList from './components/MenuList';
 

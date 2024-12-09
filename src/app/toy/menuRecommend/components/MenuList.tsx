@@ -50,7 +50,7 @@ export default function MenuList() {
             <th className={styles.head}>메뉴</th>
             <th className={styles.head}>상호</th>
             <th className={styles.head}>식사 / 디저트</th>
-            {/* <th className={styles.head}>삭제</th> */}
+            <th className={styles.head}>삭제</th>
           </tr>
         </thead>
         <tbody>
@@ -60,7 +60,6 @@ export default function MenuList() {
                 className={styles.row}
                 key={menu._id}
                 onClick={() => {
-                  console.log('IIIIIIAMMMM', menu.menuNm);
                   setSelected(menu.menuNm);
                 }}
               >
