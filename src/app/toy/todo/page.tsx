@@ -1,11 +1,10 @@
 'use client';
 
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './page.module.css';
 import Link from 'next/link';
 import { client } from '@/service/sanity';
 import Loading from '@/app/loading';
-import { log } from 'console';
 
 type Todo = {
   _id?: string;
@@ -28,8 +27,16 @@ export default function ToyPage() {
     setTodos(data);
   };
 
+  // 데이터를 서버에서 초기화
+  const fetchPosts = async () => {
+    const query = `*[_type == "post"]`; //업데이트 순으로 정렬 (최신이 먼저오도록))
+    const data = await client.fetch(query);
+    console.log(data);
+  };
+
   useEffect(() => {
     fetchTodos();
+    fetchPosts();
   }, []);
 
   const enterkey = (e: React.KeyboardEvent<HTMLInputElement>) => {

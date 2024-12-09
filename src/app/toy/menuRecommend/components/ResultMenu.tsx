@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import React, { useState } from "react";
-import styles from "./resultMenu.module.css";
+import React, { useState } from 'react';
+import styles from './resultMenu.module.css';
 
 interface IProps {
-  data: { menu: string; storeNm: string; isMeal: string }[];
+  data: { menuNm: string; storeNm: string; category: string }[];
 }
 export default function ResultMenu({ data }: IProps) {
-  const [selectedMenu, setSelectedMenu] = useState("뭐 먹지?");
+  const [selectedMenu, setSelectedMenu] = useState('뭐 먹지?');
   const [isModalOpen, setModalOpen] = useState(false);
 
   const getRandomMenu = () => {
@@ -18,7 +18,7 @@ export default function ResultMenu({ data }: IProps) {
     });
 
     if (randomMenu) {
-      setSelectedMenu(randomMenu.menu);
+      setSelectedMenu(randomMenu.menuNm);
     }
   };
 
