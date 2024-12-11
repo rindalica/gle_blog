@@ -12,8 +12,9 @@ type FormData = {
 
 interface IProps {
   setAddMenuModal: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchMenus: () => Promise<void>;
 }
-export default function AddMenuModal({ setAddMenuModal }: IProps) {
+export default function AddMenuModal({ setAddMenuModal, fetchMenus }: IProps) {
   const [formData, setFormData] = useState<FormData>({
     menuNm: '',
     storeNm: '',
@@ -39,6 +40,7 @@ export default function AddMenuModal({ setAddMenuModal }: IProps) {
         storeNm,
         category,
       });
+      await fetchMenus(); // 서버에서 데이터를 다시 가져옴.
     } catch (error) {
       console.error('Failed to add menu', error);
     } finally {

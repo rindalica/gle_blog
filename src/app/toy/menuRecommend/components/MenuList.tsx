@@ -5,6 +5,7 @@ import ResultMenu from './ResultMenu';
 import styles from '../page.module.css';
 import { client } from '@/service/sanity';
 import AddMenuModal from './AddMenuModal';
+import Loading from '@/app/loading';
 
 type Menu = {
   _id?: string;
@@ -15,7 +16,9 @@ type Menu = {
 
 export default function MenuList() {
   const [menu, setMenu] = useState<Menu[]>([]);
+  const [loading, setLoading] = useState(false);
   const [isAddMenuModal, setAddMenuModal] = useState(false);
+
   // 데이터를 서버에서 초기화
   const fetchMenus = async () => {
     const query = `*[_type == "menu"]`;
@@ -29,14 +32,14 @@ export default function MenuList() {
   }, []);
 
   const handleDeleteMenu = async (id: string) => {
-    // setLoading(true);
+    setLoading(true);
     try {
       await client.delete(id); // 문서가 존재하면 삭제
       await fetchMenus(); // 서버에서 데이터를 다시 가져옴.
     } catch (error) {
       console.error('Failed to delete todo:', error);
     } finally {
-      // setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -51,46 +54,61 @@ export default function MenuList() {
             <th className={styles.head}>삭제</th>
           </tr>
         </thead>
-        <tbody>
-          {menu.map((menu) => {
-            return (
-              <tr className={styles.row} key={menu._id}>
-                <td className={styles.data_row}>{menu.menuNm}</td>
-                <td className={styles.data_row}>{menu.storeNm}</td>
-                <td className={styles.data_row} style={{ textAlign: 'center' }}>
-                  {menu.category}
-                </td>
-                <td className={styles.data_row} style={{ textAlign: 'center' }}>
-                  <button
-                    onClick={() => {
-                      handleDeleteMenu(menu._id || '');
-                    }}
+        {loading ? (
+          <Loading />
+        ) : (
+          <tbody>
+            {menu.map((menu) => {
+              return (
+                <tr className={styles.row} key={menu._id}>
+                  <td className={styles.data_row}>{menu.menuNm}</td>
+                  <td className={styles.data_row}>{menu.storeNm}</td>
+                  <td
+                    className={styles.data_row}
+                    style={{ textAlign: 'center' }}
                   >
-                    🗑️
-                  </button>
-                </td>
-              </tr>
-            );
-          })}
-          <tr className={styles.row}>
-            <td
-              className={styles.data_row}
-              colSpan={4}
-              style={{ textAlign: 'center' }}
-            >
-              <button
-                onClick={() => {
-                  setAddMenuModal(true);
-                }}
+                    {menu.category}
+                  </td>
+                  <td
+                    className={styles.data_row}
+                    style={{ textAlign: 'center' }}
+                  >
+                    <button
+                      onClick={() => {
+                        handleDeleteMenu(menu._id || '');
+                      }}
+                    >
+                      🗑️
+                    </button>
+                  </td>
+                </tr>
+              );
+            })}
+            <tr className={styles.row}>
+              <td
+                className={styles.data_row}
+                colSpan={4}
+                style={{ textAlign: 'center' }}
               >
-                메뉴 추가
-              </button>
-            </td>
-          </tr>
-        </tbody>
+                <button
+                  onClick={() => {
+                    setAddMenuModal(true);
+                  }}
+                >
+                  메뉴 추가
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        )}
       </table>
       <ResultMenu data={menu} />
-      {isAddMenuModal && <AddMenuModal setAddMenuModal={setAddMenuModal} />}
+      {isAddMenuModal && (
+        <AddMenuModal
+          setAddMenuModal={setAddMenuModal}
+          fetchMenus={fetchMenus}
+        />
+      )}
     </>
   );
 }
