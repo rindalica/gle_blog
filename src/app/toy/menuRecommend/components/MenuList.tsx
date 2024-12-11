@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import DeleteBtn from './DeleteBtn';
 import ResultMenu from './ResultMenu';
 import styles from '../page.module.css';
 import { client } from '@/service/sanity';
+import AddMenuModal from './AddMenuModal';
 
 type Menu = {
   _id?: string;
@@ -15,13 +15,11 @@ type Menu = {
 
 export default function MenuList() {
   const [menu, setMenu] = useState<Menu[]>([]);
-  const [selected, setSelected] = useState('');
-
+  const [isAddMenuModal, setAddMenuModal] = useState(false);
   // 데이터를 서버에서 초기화
   const fetchMenus = async () => {
-    const query = `*[_type == "menu"]`; //업데이트 순으로 정렬 (최신이 먼저오도록))
+    const query = `*[_type == "menu"]`;
     const data = await client.fetch(query);
-    console.log(data);
 
     setMenu(data);
   };
@@ -49,24 +47,20 @@ export default function MenuList() {
           <tr className={styles.row}>
             <th className={styles.head}>메뉴</th>
             <th className={styles.head}>상호</th>
-            <th className={styles.head}>식사 / 디저트</th>
+            <th className={styles.head}>카테고리</th>
             <th className={styles.head}>삭제</th>
           </tr>
         </thead>
         <tbody>
           {menu.map((menu) => {
             return (
-              <tr
-                className={styles.row}
-                key={menu._id}
-                onClick={() => {
-                  setSelected(menu.menuNm);
-                }}
-              >
+              <tr className={styles.row} key={menu._id}>
                 <td className={styles.data_row}>{menu.menuNm}</td>
                 <td className={styles.data_row}>{menu.storeNm}</td>
-                <td className={styles.data_row}>{menu.category}</td>
-                <td className={styles.data_row}>
+                <td className={styles.data_row} style={{ textAlign: 'center' }}>
+                  {menu.category}
+                </td>
+                <td className={styles.data_row} style={{ textAlign: 'center' }}>
                   <button
                     onClick={() => {
                       handleDeleteMenu(menu._id || '');
@@ -78,9 +72,25 @@ export default function MenuList() {
               </tr>
             );
           })}
+          <tr className={styles.row}>
+            <td
+              className={styles.data_row}
+              colSpan={4}
+              style={{ textAlign: 'center' }}
+            >
+              <button
+                onClick={() => {
+                  setAddMenuModal(true);
+                }}
+              >
+                메뉴 추가
+              </button>
+            </td>
+          </tr>
         </tbody>
       </table>
       <ResultMenu data={menu} />
+      {isAddMenuModal && <AddMenuModal setAddMenuModal={setAddMenuModal} />}
     </>
   );
 }

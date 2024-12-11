@@ -46,3 +46,49 @@
     }
   }
 }
+
+.add_modal {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 5px solid black;
+  border-radius: 10px;
+  background-color: white;
+  font-family: 'Nanum Gothic', sans-serif;
+  z-index: 10;
+  box-shadow: 12px 12px 2px 1px rgba(0, 0, 0, 0.2);
+
+  .modal_title {
+    font-weight: 800;
+    font-style: normal;
+    font-size: 24px;
+  }
+
+  .close_btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 10px;
+    margin: 10px;
+    font-weight: 600;
+  }
+
+  .form label {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .form label input {
+    border-bottom: 3px solid black;
+  }
+}
