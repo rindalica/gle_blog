@@ -1,8 +1,10 @@
-import { getPostData } from '@/service/posts';
-import React from 'react';
-import Image from 'next/image';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import PostContent from '@/components/PostContent';
 import { bgColor } from '@/service/postBgColor';
+import { client } from '@/service/sanity';
+import { PostData } from '@/components/FilterablePosts';
 
 type Props = {
   params: {
@@ -10,8 +12,31 @@ type Props = {
   };
 };
 
-export default async function PostPage({ params: { slug } }: Props) {
-  const postData = await getPostData(slug);
+export default function PostPage({ params: { slug } }: Props) {
+  const [selected, setSelected] = useState<PostData>({
+    _id: '',
+    title: '',
+    description: '',
+    category: '',
+    path: '',
+    content: '',
+  });
+
+  const fetchPosts = async () => {
+    const query = `*[_type == "post"] | order(_createdAt desc)`; //업데이트 순으로 정렬 (최신이 먼저오도록))
+    const data = await client.fetch(query);
+    const selectedData = data.find(
+      (post: PostData) => post.path === slug
+    ) as PostData;
+    setSelected(selectedData);
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  // const selected = postData.find((post) => post.path === slug) as PostData;
+  // console.log('www', postData);
 
   return (
     <article className='rounded-2xl overflow-hidden bg-gray-100 shadow-lg'>
@@ -24,11 +49,11 @@ export default async function PostPage({ params: { slug } }: Props) {
       /> */}
       <div
         className='flex items-center justify-center h-[420px]'
-        style={{ background: bgColor(postData.category) }}
+        style={{ background: bgColor(selected?.category || '') }}
       >
-        <div className='text-2xl'>{postData.category}</div>
+        <div className='text-2xl'>{selected?.category}</div>
       </div>
-      <PostContent postData={postData} />
+      <PostContent postData={selected} />
     </article>
   );
 }

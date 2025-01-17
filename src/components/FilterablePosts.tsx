@@ -1,27 +1,50 @@
 'use client';
 
-import { Post } from '@/service/posts';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PostsGrid from './PostsGrid';
 import Categories from './Categories';
-
-type Props = {
-  posts: Post[];
-  categories: string[];
-};
+import { client } from '@/service/sanity';
 
 const ALL_POSTS = 'All Posts';
 
-export default function FilterablePosts({ posts, categories }: Props) {
+export type PostData = {
+  _id?: string;
+  title: string;
+  description: string;
+  category: string;
+  path: string;
+  content: string;
+};
+
+export default function FilterablePosts() {
+  const [postData, setPostData] = useState<PostData[]>([]);
+  const [category, setCategory] = useState<string[]>([]);
   const [selected, setSelected] = useState(ALL_POSTS);
+
+  const fetchPosts = async () => {
+    const query = `*[_type == "post"] | order(_createdAt desc)`; //업데이트 순으로 정렬 (최신이 먼저오도록))
+    const data = await client.fetch(query);
+
+    setPostData(data);
+  };
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  useEffect(() => {
+    const categoryData = [...new Set(postData.map((post) => post.category))];
+    setCategory(categoryData);
+  }, [postData]);
+
   const filtered =
     selected === ALL_POSTS
-      ? posts
-      : posts.filter((post) => post.category === selected);
+      ? postData
+      : postData.filter((post) => post.category === selected);
   return (
     <div>
       <Categories
-        categories={[ALL_POSTS, ...categories]}
+        categories={[ALL_POSTS, ...category]}
         selected={selected}
         onClick={setSelected}
       />

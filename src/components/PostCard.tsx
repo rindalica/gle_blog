@@ -3,11 +3,12 @@ import Link from 'next/link';
 import React from 'react';
 import Image from 'next/image';
 import { bgColor } from '@/service/postBgColor';
+import { PostData } from './FilterablePosts';
 
-type Props = { post: Post };
+type Props = { post: PostData };
 
 export default function PostCard({
-  post: { title, description, date, category, path, featured, image },
+  post: { title, description, category, path },
 }: Props) {
   return (
     <Link href={`/posts/${path}`}>

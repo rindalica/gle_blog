@@ -19,9 +19,14 @@ export default {
       type: 'string',
     },
     {
+      title: 'Path',
+      name: 'path',
+      type: 'string',
+    },
+    {
       title: 'Content',
       name: 'content',
-      type: 'string',
+      type: 'markdown',
     },
   ],
 }
