@@ -35,9 +35,6 @@ export default function PostPage({ params: { slug } }: Props) {
     fetchPosts();
   }, []);
 
-  // const selected = postData.find((post) => post.path === slug) as PostData;
-  // console.log('www', postData);
-
   return (
     <article className='rounded-2xl overflow-hidden bg-gray-100 shadow-lg'>
       {/* <Image
