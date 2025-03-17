@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import PostsGrid from './PostsGrid';
 import Categories from './Categories';
 import { client } from '@/service/sanity';
+import Loading from '@/app/loading';
 
 const ALL_POSTS = 'All Posts';
 
@@ -43,11 +44,13 @@ export default function FilterablePosts() {
       : postData.filter((post) => post.category === selected);
   return (
     <div>
-      <Categories
-        categories={[ALL_POSTS, ...category]}
-        selected={selected}
-        onClick={setSelected}
-      />
+      {postData.length !== 0 && (
+        <Categories
+          categories={[ALL_POSTS, ...category]}
+          selected={selected}
+          onClick={setSelected}
+        />
+      )}
       <PostsGrid posts={filtered} />
     </div>
   );
