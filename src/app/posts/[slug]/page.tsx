@@ -36,7 +36,7 @@ export default function PostPage({ params: { slug } }: Props) {
   }, []);
 
   return (
-    <article className='rounded-2xl overflow-hidden bg-gray-100 shadow-lg'>
+    <article className='rounded-2xl overflow-auto bg-gray-100 shadow-lg'>
       {/* <Image
         className='w-full h-1/5 max-h-[500px]'
         src={`/images/posts/${postData.image}`}
