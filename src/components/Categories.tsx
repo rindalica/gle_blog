@@ -8,13 +8,12 @@ type Props = {
 
 export default function Categories({ categories, selected, onClick }: Props) {
   return (
-    <div className='flex justify-between p-[10px] mb-[10px] border-b-4'>
-      <h2>Category</h2>
+    <div className='flex justify-end p-[10px] mb-[10px] border-b-4'>
       <ul className='flex gap-[10px]'>
         {categories.map((category) => (
           <li
             key={category}
-            className='pr-[5px] border-r-2'
+            className='pr-[5px]'
             onClick={() => {
               onClick(category);
             }}
