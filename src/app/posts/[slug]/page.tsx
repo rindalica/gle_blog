@@ -36,21 +36,23 @@ export default function PostPage({ params: { slug } }: Props) {
   }, []);
 
   return (
-    <article className='rounded-2xl overflow-auto bg-gray-100 shadow-lg'>
-      {/* <Image
+    <div className='flex justify-center w-full'>
+      <article className='w-[1000px] rounded-2xl overflow-auto bg-gray-100 shadow-lg'>
+        {/* <Image
         className='w-full h-1/5 max-h-[500px]'
         src={`/images/posts/${postData.image}`}
         alt={postData.title}
         width={760}
         height={420}
       /> */}
-      <div
-        className='flex items-center justify-center h-[420px]'
-        style={{ background: bgColor(selected?.category || '') }}
-      >
-        <div className='text-2xl'>{selected?.category}</div>
-      </div>
-      <PostContent postData={selected} />
-    </article>
+        <div
+          className='flex items-center justify-center h-[420px]'
+          style={{ background: bgColor(selected?.category || '') }}
+        >
+          <div className='text-2xl'>{selected?.category}</div>
+        </div>
+        <PostContent postData={selected} />
+      </article>
+    </div>
   );
 }
