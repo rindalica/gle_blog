@@ -43,7 +43,7 @@ export default function FilterablePosts() {
       ? postData
       : postData.filter((post) => post.category === selected);
   return (
-    <div className='w-full'>
+    <div className='w-full h-full overflow-auto'>
       {postData.length !== 0 && (
         <Categories
           categories={[ALL_POSTS, ...category]}
